@@ -1,0 +1,95 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Stores personalized information for a user, used for tailoring food recommendations and assessments.",
+      "properties": {
+        "id": { "type": "string" },
+        "age": { "type": "number" },
+        "weight": { "type": "number" },
+        "healthConditions": { "type": "array", "items": { "type": "string" } },
+        "dietType": { "type": "string" },
+        "region": { "type": "string", "description": "The user's geographical region in India for cultural food context." },
+        "dietGoals": { "type": "array", "items": { "type": "string" } },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" }
+      },
+      "required": ["id", "age", "weight", "healthConditions", "dietType", "dietGoals", "region"]
+    },
+    "SearchHistory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SearchHistory",
+      "type": "object",
+      "description": "Records a user's past search queries.",
+      "properties": {
+        "userId": { "type": "string" },
+        "query": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "query", "timestamp"]
+    },
+    "CartHistory": {
+      "title": "CartHistory",
+      "type": "object",
+      "description": "Records items analyzed in a user's cart.",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "string" } },
+        "healthScore": { "type": "number" },
+        "riskSummary": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "WeeklyInsight": {
+      "title": "WeeklyInsight",
+      "type": "object",
+      "description": "AI generated weekly summary and advice.",
+      "properties": {
+        "userId": { "type": "string" },
+        "summary": { "type": "string" },
+        "advice": { "type": "string" },
+        "topRisk": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Notification": {
+      "title": "Notification",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "type": "object",
+      "description": "User feedback regarding app utility and experience.",
+      "properties": {
+        "userId": { "type": "string" },
+        "useful": { "type": "string", "enum": ["yes", "no"] },
+        "confusion": { "type": "string" },
+        "improvement": { "type": "string" },
+        "language": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["useful", "timestamp"]
+    }
+  },
+  "auth": {
+    "providers": ["password", "google", "anonymous"]
+  },
+  "firestore": {
+    "/users/{userId}/profile": { "schema": "UserProfile", "description": "Private user profile." },
+    "/users/{userId}/searchHistory/{id}": { "schema": "SearchHistory", "description": "User's search history." },
+    "/users/{userId}/cartHistory/{id}": { "schema": "CartHistory", "description": "User's cart analysis history." },
+    "/users/{userId}/weeklyInsights/{id}": { "schema": "WeeklyInsight", "description": "AI health insights." },
+    "/users/{userId}/notifications/{id}": { "schema": "Notification", "description": "User alerts." },
+    "/feedback/{id}": { "schema": "Feedback", "description": "Public feedback collection." }
+  }
+}
