@@ -1,6 +1,8 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: __dirname,   // ← ADD THIS LINE
+
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -29,7 +31,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Optimize server actions for production AI flows
+
   experimental: {
     serverActions: {
       bodySizeLimit: '4mb',
